@@ -22,6 +22,10 @@
   --softyellow: #FFE8B8;
   --radius: 12px;
   --shadow: 0 2px 12px rgba(255, 181, 194, 0.15);
+  --accent-soft: #FFF0F0;
+  --accent-glow: rgba(255, 181, 194, 0.2);
+  --accent-glow-soft: rgba(255, 181, 194, 0.15);
+  --progress-bg: #FFE8E8;
 }
 
 html, body, #root {
@@ -55,6 +59,7 @@ h1, h2, h3, h4, h5 {
   display: flex;
   flex-direction: column;
   gap: 0;
+  position: relative;
 }
 
 .titlebar-title {
@@ -70,6 +75,86 @@ h1, h2, h3, h4, h5 {
   color: var(--text-muted);
   letter-spacing: 3px;
   text-transform: uppercase;
+}
+
+/* === THEME SELECTOR === */
+.theme-selector {
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  z-index: 100;
+}
+
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  -webkit-app-region: no-drag;
+}
+
+.theme-toggle:hover {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px var(--accent-glow-soft);
+}
+
+.theme-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 6px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+}
+
+.theme-option:hover {
+  background: var(--accent-soft);
+}
+
+.theme-option.active {
+  background: var(--pink);
+  color: white;
+}
+
+.theme-option-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.theme-option-name {
+  font-weight: 600;
 }
 
 .main {
@@ -235,9 +320,9 @@ h1, h2, h3, h4, h5 {
 
 .mood-btn.active {
   border-color: var(--pink);
-  background: #FFF0F0;
+  background: var(--accent-soft);
   transform: scale(1.15);
-  box-shadow: 0 0 0 3px rgba(255, 181, 194, 0.2);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 /* === TASK LIST === */
@@ -263,7 +348,7 @@ h1, h2, h3, h4, h5 {
 
 .habit-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(255, 181, 194, 0.2);
+  box-shadow: 0 4px 16px var(--accent-glow);
 }
 
 .habit-card.done {
@@ -382,7 +467,7 @@ h1, h2, h3, h4, h5 {
 
 .input:focus {
   border-color: var(--pink);
-  box-shadow: 0 0 0 3px rgba(255, 181, 194, 0.15);
+  box-shadow: 0 0 0 3px var(--accent-glow-soft);
 }
 
 .input::placeholder {
@@ -407,7 +492,7 @@ h1, h2, h3, h4, h5 {
 .color-swatch.selected {
   border-color: var(--text);
   transform: scale(1.2);
-  box-shadow: 0 0 0 3px rgba(255, 181, 194, 0.2);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 /* Priority in form */
@@ -484,8 +569,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .btn.primary:hover {
-  background: #FFA5B5;
-  border-color: #FFA5B5;
+  filter: brightness(0.92);
 }
 
 .add-btn {
@@ -496,8 +580,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .add-btn:hover {
-  background: #FFA5B5;
-  border-color: #FFA5B5;
+  filter: brightness(0.92);
 }
 
 .cancel-btn:hover {
@@ -543,8 +626,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .save-note-btn:hover {
-  background: #A5DCC4;
-  border-color: #A5DCC4;
+  filter: brightness(0.92);
 }
 
 /* Empty state */
@@ -767,7 +849,7 @@ h1, h2, h3, h4, h5 {
 
 .notes-input:focus {
   border-color: var(--pink);
-  box-shadow: 0 0 0 3px rgba(255, 181, 194, 0.15);
+  box-shadow: 0 0 0 3px var(--accent-glow-soft);
 }
 
 .notes-input::placeholder {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useStore } from '../store'
+import { THEMES, DEFAULT_THEME } from '../themes'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 function CalendarHeatmap({ entries, color }) {
@@ -26,7 +27,7 @@ function CalendarHeatmap({ entries, color }) {
   )
 }
 
-function MonthChart({ entries, color }) {
+function MonthChart({ entries, color, colors }) {
   const today = new Date()
   const data = []
   for (let i = 29; i >= 0; i--) {
@@ -40,10 +41,10 @@ function MonthChart({ entries, color }) {
   return (
     <ResponsiveContainer width="100%" height={160}>
       <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-        <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#B89393' }} interval={4} />
+        <XAxis dataKey="date" tick={{ fontSize: 10, fill: colors.tick }} interval={4} />
         <YAxis hide domain={[0, 1]} />
         <Tooltip
-          contentStyle={{ background: '#FFF5F5', border: '1px solid #FCD5D5', borderRadius: 8, fontSize: 12 }}
+          contentStyle={{ background: colors.tooltipBg, border: `1px solid ${colors.tooltipBorder}`, borderRadius: 8, fontSize: 12 }}
           formatter={(v) => [v ? 'done ♡' : 'missed', 'status']}
         />
         <Bar dataKey="done" fill={color} radius={[6, 6, 0, 0]} maxBarSize={12} />
@@ -53,8 +54,14 @@ function MonthChart({ entries, color }) {
 }
 
 export default function Stats() {
-  const { habits, getStreak, getLongestStreak, getCompletionRate } = useStore()
+  const { habits, getStreak, getLongestStreak, getCompletionRate, theme } = useStore()
   const [selected, setSelected] = useState(null)
+  const t = THEMES[theme] || THEMES[DEFAULT_THEME]
+  const chartColors = {
+    tick: t.vars['--text-soft'],
+    tooltipBg: t.vars['--bg'],
+    tooltipBorder: t.vars['--border'],
+  }
 
   if (habits.length === 0) {
     return (
@@ -118,7 +125,7 @@ export default function Stats() {
 
             <div className="stats-section">
               <h4>last 30 days</h4>
-              <MonthChart entries={h.entries} color={h.color} />
+              <MonthChart entries={h.entries} color={h.color} colors={chartColors} />
             </div>
           </div>
         )

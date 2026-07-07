@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react'
+import { DEFAULT_THEME } from './themes'
 
 const StoreContext = createContext()
 
@@ -14,6 +15,18 @@ function saveData(data) {
   localStorage.setItem('coquette-data', JSON.stringify(data))
 }
 
+function loadTheme() {
+  try {
+    return localStorage.getItem('coquette-theme') || DEFAULT_THEME
+  } catch {
+    return DEFAULT_THEME
+  }
+}
+
+function saveTheme(key) {
+  localStorage.setItem('coquette-theme', key)
+}
+
 function today() {
   return new Date().toISOString().slice(0, 10)
 }
@@ -24,8 +37,10 @@ function genId() {
 
 export function StoreProvider({ children }) {
   const [data, setData] = useState(loadData)
+  const [theme, setTheme] = useState(loadTheme)
 
   useEffect(() => { saveData(data) }, [data])
+  useEffect(() => { saveTheme(theme) }, [theme])
 
   function addHabit(name, description, color, priority) {
     setData(d => ({
@@ -126,6 +141,8 @@ export function StoreProvider({ children }) {
       habits: data.habits,
       notes: data.notes,
       moods: data.moods,
+      theme,
+      setTheme,
       addHabit,
       updateHabit,
       deleteHabit,

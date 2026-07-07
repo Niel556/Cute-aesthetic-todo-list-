@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useStore } from '../store'
+import { THEMES, DEFAULT_THEME } from '../themes'
 
 const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
@@ -54,7 +55,7 @@ function ProgressRing({ done, total, color }) {
   return (
     <div className="progress-ring">
       <svg width="100" height="100" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r={r} fill="none" stroke="#FFE8E8" strokeWidth="6" />
+        <circle cx="50" cy="50" r={r} fill="none" stroke="var(--progress-bg)" strokeWidth="6" />
         <circle
           cx="50" cy="50" r={r}
           fill="none"
@@ -76,7 +77,8 @@ function ProgressRing({ done, total, color }) {
 }
 
 export default function Today() {
-  const { habits, notes, moods, toggleEntry, getStreak, saveNote, saveMood, today } = useStore()
+  const { habits, notes, moods, toggleEntry, getStreak, saveNote, saveMood, today, theme } = useStore()
+  const accent = (THEMES[theme] || THEMES[DEFAULT_THEME]).vars['--pink']
   const todayKey = today()
   const d = new Date()
   const weekday = WEEKDAYS[d.getDay()]
@@ -114,7 +116,7 @@ export default function Today() {
         <span className="date-weekday">{weekday}</span>
         <span className="date-day">{month} {day}</span>
         {totalTasks > 0 && (
-          <ProgressRing done={doneCount} total={totalTasks} color="#FFB5C2" />
+          <ProgressRing done={doneCount} total={totalTasks} color={accent} />
         )}
       </div>
 
